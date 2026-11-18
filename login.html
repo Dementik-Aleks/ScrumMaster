@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    main {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 360px;
+    }
+    h1 { margin-top: 0; font-size: 1.5rem; text-align: center; }
+    .field { margin-bottom: 1rem; }
+    label { display: block; margin-bottom: 0.25rem; font-weight: bold; }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    input:invalid:not(:placeholder-shown) { border-color: #d93025; }
+    .error { color: #d93025; font-size: 0.85rem; min-height: 1.1em; margin: 0.25rem 0 0; }
+    button {
+      width: 100%;
+      padding: 0.6rem;
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover { background: #1558b0; }
+    .links { text-align: center; margin-top: 1rem; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Connexion</h1>
+
+    <form id="login-form" action="#" method="post" novalidate>
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <input type="email" id="email" name="email"
+               placeholder="nom@exemple.com"
+               autocomplete="email" required>
+        <p class="error" id="email-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password"
+               placeholder="Au moins 8 caractères"
+               minlength="8" autocomplete="current-password" required>
+        <p class="error" id="password-error" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label>
+          <input type="checkbox" name="remember"> Se souvenir de moi
+        </label>
+      </div>
+
+      <button type="submit">Se connecter</button>
+    </form>
+
+    <div class="links">
+      <a href="register.html">Créer un compte</a>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById("login-form");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const emailError = document.getElementById("email-error");
+    const passwordError = document.getElementById("password-error");
+
+    function validateEmail() {
+      if (email.validity.valueMissing) {
+        emailError.textContent = "L'adresse e-mail est obligatoire.";
+      } else if (email.validity.typeMismatch) {
+        emailError.textContent = "Veuillez saisir une adresse e-mail valide.";
+      } else {
+        emailError.textContent = "";
+      }
+      return email.checkValidity();
+    }
+
+    function validatePassword() {
+      if (password.validity.valueMissing) {
+        passwordError.textContent = "Le mot de passe est obligatoire.";
+      } else if (password.validity.tooShort) {
+        passwordError.textContent = "Le mot de passe doit contenir au moins 8 caractères.";
+      } else {
+        passwordError.textContent = "";
+      }
+      return password.checkValidity();
+    }
+
+    email.addEventListener("blur", validateEmail);
+    password.addEventListener("blur", validatePassword);
+
+    form.addEventListener("submit", (event) => {
+      const emailOk = validateEmail();
+      const passwordOk = validatePassword();
+      if (!emailOk || !passwordOk) {
+        event.preventDefault(); // bloque l'envoi si le formulaire est invalide
+      }
+    });
+  </script>
+</body>
+</html>
